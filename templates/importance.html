@@ -1,0 +1,144 @@
+{% extends "base.html" %} {% block title %}Feature Importance — Diabetes Risk
+Analysis{% endblock %} {% block subtitle %}Random Forest Model{% endblock %} {%
+block heading %}Feature Importance{% endblock %} {% block content %}
+
+<!-- Model Accuracy Banner -->
+<div class="card flex justify-between items-center">
+  <div>
+    <div class="label-xs text-primary mb-1">Model Accuracy</div>
+    <div class="text-4xl font-extrabold text-slate-900">
+      {{ accuracy }}<span class="text-base font-bold text-slate-400">%</span>
+    </div>
+  </div>
+  <div class="text-right">
+    <div class="label-xs mb-1">ROC-AUC Score</div>
+    <div class="text-2xl font-bold text-sidebar">{{ roc_auc }}</div>
+    <div class="text-[10px] text-slate-400 mt-0.5">Gini Impurity Criterion</div>
+  </div>
+</div>
+
+<!-- Top 10 Horizontal Bars -->
+<div>
+  <div class="text-[17px] font-bold text-slate-900 mb-4">Top 10 Drivers</div>
+  <div class="card">
+    {% for f in features %}
+    <div class="feat-bar">
+      <div class="feat-bar-label">
+        <span>{{ f.name }}</span>
+        <span class="font-bold">{{ f.score }}</span>
+      </div>
+      <div class="feat-bar-bg">
+        <div class="feat-bar-fill" style="width:{{ f.width }}%;"></div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Ranked Table -->
+<div>
+  <div class="text-[17px] font-bold text-slate-900 mb-3">
+    Ranked Feature Table
+  </div>
+  <div class="card" style="padding: 0; overflow: hidden">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Variable</th>
+          <th style="text-align: right">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for f in features %}
+        <tr>
+          <td style="color: #94a3b8; font-weight: 600">{{ f.rank }}</td>
+          <td>{{ f.name }}</td>
+          <td style="text-align: right; font-family: monospace">
+            {{ f.score }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Dark Academic Discussion Card -->
+<div class="dark-card">
+  <div
+    style="
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      opacity: 0.08;
+      font-size: 72px;
+      line-height: 1;
+    "
+  >
+    <span class="material-symbols-outlined">menu_book</span>
+  </div>
+  <div class="flex items-center gap-2 mb-4">
+    <span class="material-symbols-outlined text-primary text-[20px]"
+      >analytics</span
+    >
+    <h3>Academic Discussion</h3>
+  </div>
+  <p>
+    The <span style="color: white; font-weight: 600">Random Forest</span> model
+    identifies <span style="color: #137fec; font-weight: 700">BMI</span> as the
+    primary driver, accounting for the largest share of predictive power. This
+    aligns with established clinical literature linking
+    <em>adipose-induced insulin resistance</em> to diabetes onset.
+  </p>
+  <p>
+    <span style="color: white; font-weight: 600">General Health (GenHlth)</span>
+    ranks second, suggesting that patient self-perception captures
+    multi-morbidity signals not easily quantified by individual physiological
+    metrics in isolation.
+  </p>
+  <p>
+    <span style="color: white; font-weight: 600">Age</span> and
+    <span style="color: white; font-weight: 600">High BP</span> confirm a strong
+    age-related risk trajectory, consistent with epidemiological findings that
+    hypertension and insulin resistance co-develop as key metabolic syndrome
+    components.
+  </p>
+  <div
+    style="
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    "
+  >
+    <div style="display: flex; gap: -8px">
+      {% for abbr in ['DR','AI','ML'] %}
+      <div
+        style="
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          background: #334155;
+          border: 2px solid #1e293b;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 10px;
+          font-weight: 700;
+          margin-left: -6px;
+        "
+      >
+        {{ abbr }}
+      </div>
+      {% endfor %}
+    </div>
+    <span style="font-size: 10px; color: #475569; font-style: italic"
+      >Analysis based on BRFSS Clinical Dataset</span
+    >
+  </div>
+</div>
+
+{% endblock %}

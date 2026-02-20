@@ -1,0 +1,246 @@
+{% extends "base.html" %} {% block title %}Risk Prediction — Diabetes Risk
+Analysis{% endblock %} {% block subtitle %}Predictive Models{% endblock %} {%
+block heading %}Risk Prediction Tool{% endblock %} {% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-5 md:gap-6">
+  <!-- LEFT: Input Form -->
+  <div class="space-y-4">
+    <!-- Health Metrics section -->
+    <div class="label-xs mb-2" style="letter-spacing: 0.1em">
+      Health Metrics
+    </div>
+
+    {% for field_id, icon, label, default in [ ("high_bp", "bloodtype", "High
+    Blood Pressure", false), ("high_chol", "biotech", "High Cholesterol",
+    false), ("smoker", "smoking_rooms", "Smoker", false),
+    ("phys_activity","directions_run", "Physical Activity", true), ("fruits",
+    "nutrition", "Consumes Fruits", true), ("veggies", "grass", "Consumes
+    Vegetables", true), ("hvy_alcohol", "local_bar", "Heavy Alcohol Use",
+    false), ("diff_walk", "accessibility", "Difficulty Walking", false), ] %}
+    <div class="toggle-card">
+      <div class="flex items-center">
+        <div class="toggle-icon">
+          <span class="material-symbols-outlined text-[20px]">{{ icon }}</span>
+        </div>
+        <span class="text-[15px] font-medium">{{ label }}</span>
+      </div>
+      <label class="pill">
+        <input
+          type="checkbox"
+          id="{{ field_id }}"
+          {%
+          if
+          default
+          %}checked{%
+          endif
+          %}
+          onchange="schedulePredict()"
+        />
+        <span class="pill-track"></span>
+        <span class="pill-thumb"></span>
+      </label>
+    </div>
+    {% endfor %}
+
+    <!-- Clinical Parameters -->
+    <div class="label-xs mt-4 mb-2" style="letter-spacing: 0.1em">
+      Clinical Parameters
+    </div>
+
+    <div class="card space-y-4">
+      <!-- BMI Slider -->
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <div class="flex items-center gap-2">
+            <div class="toggle-icon">
+              <span class="material-symbols-outlined text-[20px]"
+                >monitor_weight</span
+              >
+            </div>
+            <span class="text-[15px] font-medium">BMI Index</span>
+          </div>
+          <span id="bmi-val" class="text-primary font-extrabold text-lg"
+            >25.0</span
+          >
+        </div>
+        <input
+          type="range"
+          id="bmi"
+          min="10"
+          max="60"
+          step="0.5"
+          value="25"
+          oninput="
+            document.getElementById('bmi-val').textContent = parseFloat(
+              this.value,
+            ).toFixed(1);
+            schedulePredict();
+          "
+        />
+        <div
+          class="flex justify-between text-[10px] text-slate-400 font-bold uppercase mt-1"
+        >
+          <span>10 Low</span><span>60 High</span>
+        </div>
+      </div>
+
+      <!-- General Health -->
+      <div>
+        <label class="text-xs font-semibold text-slate-500 block mb-1"
+          >General Health Status</label
+        >
+        <div class="relative">
+          <select id="gen_hlth" onchange="schedulePredict()">
+            <option value="1">Excellent</option>
+            <option value="2">Very Good</option>
+            <option value="3" selected>Good</option>
+            <option value="4">Fair</option>
+            <option value="5">Poor</option>
+          </select>
+          <span
+            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"
+            >expand_more</span
+          >
+        </div>
+      </div>
+
+      <!-- Age -->
+      <div>
+        <label class="text-xs font-semibold text-slate-500 block mb-1"
+          >Age Category</label
+        >
+        <div class="relative">
+          <select id="age" onchange="schedulePredict()">
+            <option value="1">18–24</option>
+            <option value="2">25–29</option>
+            <option value="3">30–34</option>
+            <option value="4">35–39</option>
+            <option value="5" selected>40–44</option>
+            <option value="6">45–49</option>
+            <option value="7">50–54</option>
+            <option value="8">55–59</option>
+            <option value="9">60–64</option>
+            <option value="10">65–69</option>
+            <option value="11">70–74</option>
+            <option value="12">75–79</option>
+            <option value="13">80+</option>
+          </select>
+          <span
+            class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400"
+            >expand_more</span
+          >
+        </div>
+      </div>
+
+      <!-- Education + Income in 2 cols -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-xs font-semibold text-slate-500 block mb-1"
+            >Education (1–6)</label
+          >
+          <input
+            type="range"
+            id="education"
+            min="1"
+            max="6"
+            step="1"
+            value="4"
+            oninput="schedulePredict()"
+          />
+        </div>
+        <div>
+          <label class="text-xs font-semibold text-slate-500 block mb-1"
+            >Income (1–8)</label
+          >
+          <input
+            type="range"
+            id="income"
+            min="1"
+            max="8"
+            step="1"
+            value="5"
+            oninput="schedulePredict()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Result Panel -->
+  <div class="space-y-4">
+    <div class="card text-center" style="padding: 28px 20px">
+      <div class="section-tag mb-5">Prediction Result</div>
+
+      <!-- Gauge -->
+      <div class="gauge-wrap">
+        <div
+          class="gauge"
+          id="gauge"
+          style="background: conic-gradient(#9cd5ff 0%, #e2e8f0 0%)"
+        >
+          <div class="gauge-inner">
+            <div
+              id="gauge-pct"
+              class="text-4xl font-extrabold text-slate-800 leading-none"
+            >
+              —
+            </div>
+            <div
+              class="text-[9px] uppercase tracking-widest text-slate-400 mt-1"
+            >
+              Risk Factor
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badge -->
+      <div class="mt-6">
+        <span id="risk-badge" class="badge badge-mod">—</span>
+      </div>
+
+      <!-- Interpretation -->
+      <div
+        id="interp-box"
+        class="mt-4 rounded-xl p-4 text-sm text-slate-600 italic leading-relaxed text-left"
+        style="background: #fef3c7"
+      >
+        Enter your health metrics and the risk score will update automatically.
+      </div>
+
+      <div id="demo-note" class="hidden mt-3 text-xs text-slate-400">
+        ⚠️ Demo mode — trained model unavailable
+      </div>
+    </div>
+
+    <!-- Quick insight cards -->
+    <div class="grid grid-cols-3 gap-2 md:gap-3">
+      <div class="perf-card text-center">
+        <div class="label-xs text-sidebar mb-1">BMI Risk</div>
+        <div id="bmi-badge" class="text-lg font-bold text-sidebar">—</div>
+      </div>
+      <div class="perf-card text-center">
+        <div class="label-xs text-sidebar mb-1">BP Risk</div>
+        <div id="bp-badge" class="text-lg font-bold text-sidebar">—</div>
+      </div>
+      <div class="perf-card text-center">
+        <div class="label-xs text-sidebar mb-1">Age Group</div>
+        <div id="age-badge" class="text-lg font-bold text-sidebar">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+<script>
+  // Auto-predict on page load
+  window.addEventListener("DOMContentLoaded", () => {
+    schedulePredict();
+    updateSidecards();
+  });
+  document.getElementById("bmi").addEventListener("input", updateSidecards);
+  document
+    .getElementById("high_bp")
+    .addEventListener("change", updateSidecards);
+  document.getElementById("age").addEventListener("change", updateSidecards);
+</script>
+{% endblock %}

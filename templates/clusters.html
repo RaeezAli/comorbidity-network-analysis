@@ -1,0 +1,122 @@
+{% extends "base.html" %} {% block title %}Cluster Analysis — Diabetes Risk
+Analysis{% endblock %} {% block subtitle %}Comorbidity Profiles{% endblock %} {%
+block heading %}Cluster Analysis{% endblock %} {% block content %}
+
+<!-- Cluster Size Bar Chart (Plotly) -->
+<div class="card" style="padding: 16px">
+  <div class="text-[15px] font-bold text-slate-900 mb-1">
+    Patient Distribution per Cluster
+  </div>
+  <div class="text-xs text-slate-400 mb-4">K-means segmentation results</div>
+  <div id="cluster-bar" style="height: 200px"></div>
+</div>
+
+<!-- Profiles Table -->
+<div>
+  <div class="text-[17px] font-bold text-slate-900 mb-3">Cluster Profiles</div>
+  <div class="table-scroll card" style="padding: 0; overflow: hidden">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Cluster</th>
+          <th>Diabetes Rate</th>
+          <th>Mean BMI</th>
+          <th>Mean Age</th>
+          <th>HighBP Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in profiles %}
+        <tr>
+          <td><strong>Cluster {{ p.Cluster | int }}</strong></td>
+          <td>{{ "%.1f"|format(p.Diabetes_rate * 100) }}%</td>
+          <td>{{ "%.1f"|format(p.Mean_BMI) }}</td>
+          <td>{{ "%.1f"|format(p.Mean_Age) }}</td>
+          <td>{{ "%.1f"|format(p.HighBP_rate * 100) }}%</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Scatter Plot (Plotly) -->
+<div class="card" style="padding: 16px">
+  <div class="text-[15px] font-bold text-slate-900 mb-4">
+    BMI vs Age — Patient Distribution
+  </div>
+  <div id="cluster-scatter" style="height: 280px"></div>
+</div>
+
+<!-- Cluster Interpretation Cards -->
+<div>
+  <div class="text-[17px] font-bold text-slate-900 mb-3">
+    Cluster Interpretations
+  </div>
+  <div class="cluster-red">
+    <div class="font-bold text-[14px] mb-1">
+      🔴 Cluster 0 — High-Risk Profile
+    </div>
+    <div class="text-[13px] leading-relaxed">
+      Highest diabetes rate (~34.7%), obese BMI avg (31.5), and 69.4%
+      hypertension rate. Older adults with multiple chronic comorbidities.
+    </div>
+  </div>
+  <div class="cluster-yel">
+    <div class="font-bold text-[14px] mb-1">
+      🟡 Cluster 1 — Moderate-Risk Profile
+    </div>
+    <div class="text-[13px] leading-relaxed">
+      22.1% diabetes rate, overweight BMI avg (29.4), highest BP rate (72.4%).
+      Older cohort with significant cardiovascular risk.
+    </div>
+  </div>
+  <div class="cluster-grn">
+    <div class="font-bold text-[14px] mb-1">
+      🟢 Cluster 2 — Low-Risk Profile
+    </div>
+    <div class="text-[13px] leading-relaxed">
+      Very low diabetes rate (~4%), healthiest BMI (26.5), minimal hypertension
+      (9.8%). Younger patients with generally good metabolic health.
+    </div>
+  </div>
+</div>
+
+{% endblock %} {% block scripts %}
+<script>
+  const scatter = {{ scatter | safe }};
+  const palette = ['#9CD5FF','#7AAACE','#355872'];
+
+  // Bar chart
+  const groups = {};
+  scatter.forEach(d => { groups[d.g] = (groups[d.g]||0) + 1; });
+  const gKeys = Object.keys(groups).sort();
+  Plotly.newPlot('cluster-bar', [{
+    type: 'bar',
+    x: gKeys.map(k => 'Cluster ' + k),
+    y: gKeys.map(k => groups[k]),
+    marker: { color: palette.slice(0, gKeys.length) },
+  }], {
+    margin:{l:40,r:20,t:10,b:40},
+    paper_bgcolor:'white', plot_bgcolor:'white',
+    font:{family:'Inter'},
+  }, {responsive:true, displayModeBar:false});
+
+  // Scatter
+  const traces = gKeys.map((g, i) => ({
+    x: scatter.filter(d=>d.g===g).map(d=>d.x),
+    y: scatter.filter(d=>d.g===g).map(d=>d.y),
+    mode: 'markers',
+    name: 'Cluster ' + g,
+    marker: { color: palette[i % palette.length], size: 5, opacity: 0.55 },
+    type: 'scatter',
+  }));
+  Plotly.newPlot('cluster-scatter', traces, {
+    xaxis:{title:'Age Category', tickfont:{family:'Inter'}},
+    yaxis:{title:'BMI', tickfont:{family:'Inter'}},
+    margin:{l:50,r:20,t:10,b:50},
+    paper_bgcolor:'white', plot_bgcolor:'white',
+    font:{family:'Inter'}, legend:{orientation:'h',y:-0.15},
+  }, {responsive:true, displayModeBar:false});
+</script>
+{% endblock %}

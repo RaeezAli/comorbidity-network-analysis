@@ -1,5 +1,24 @@
 {
     "python-envs.defaultEnvManager": "ms-python.python:conda",
     "python-envs.defaultPackageManager": "ms-python.python:conda",
-    "python-envs.pythonProjects": []
+    "python-envs.pythonProjects": [],
+
+    // ── Jinja2 template support ──────────────────────────────────────────────
+    // Treat all .html files in this project as Jinja2 HTML (requires the
+    // "Jinja" extension by wholroyd, or "Better Jinja" by samuelcolvin).
+    // This silences false-positive HTML/JS/CSS errors caused by {{ }} and {% %}.
+    "files.associations": {
+        "**/templates/**/*.html": "jinja-html"
+    },
+
+    // Disable VS Code's built-in HTML validator for script & style blocks
+    // inside Jinja templates (they contain template expressions that look
+    // invalid to a plain HTML parser).
+    "html.validate.scripts": false,
+    "html.validate.styles": false,
+
+    // Emmet completions inside Jinja HTML files
+    "emmet.includeLanguages": {
+        "jinja-html": "html"
+    }
 }

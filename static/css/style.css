@@ -1,0 +1,177 @@
+/* ═══════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════ */
+.card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  padding: 16px;
+}
+@media (min-width: 768px) { .card { padding: 20px; } }
+
+.perf-card {
+  background: rgba(53,88,114,0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(53,88,114,0.12);
+  padding: 14px;
+}
+.metric-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  padding: 12px;
+  text-align: center;
+}
+
+/* ═══════════════════════════════════════════
+   LABELS / TYPOGRAPHY
+═══════════════════════════════════════════ */
+.label-xs {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8;
+}
+.section-tag {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em; color: #137fec;
+  margin-bottom: 4px;
+}
+
+/* ═══════════════════════════════════════════
+   PROGRESS BARS (thin disease bars)
+═══════════════════════════════════════════ */
+.bar-row  { margin-bottom: 12px; }
+.bar-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 11px; font-weight: 600; color: #475569; }
+.bar-bg    { background: #f1f5f9; border-radius: 9999px; height: 9px; overflow: hidden; }
+.bar-fill  { height: 9px; border-radius: 9999px; background: #9CD5FF; }
+
+/* ═══════════════════════════════════════════
+   FEATURE BARS (tall horizontal)
+═══════════════════════════════════════════ */
+.feat-bar { margin-bottom: 12px; }
+.feat-bar-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 500; color: #475569; margin-bottom: 4px; }
+.feat-bar-bg    { background: #e2e8f0; border-radius: 9999px; height: 18px; overflow: hidden; }
+.feat-bar-fill  { height: 18px; border-radius: 9999px; background: #9CD5FF; }
+
+/* ═══════════════════════════════════════════
+   RISK GAUGE
+═══════════════════════════════════════════ */
+.gauge-wrap { display: flex; flex-direction: column; align-items: center; }
+.gauge {
+  width: 160px; height: 160px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+@media (min-width: 768px) {
+  .gauge { width: 176px; height: 176px; }
+}
+.gauge-inner {
+  width: 83%; height: 83%; background: white; border-radius: 50%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+}
+
+/* ═══════════════════════════════════════════
+   BADGES
+═══════════════════════════════════════════ */
+.badge { display: inline-block; padding: 5px 16px; border-radius: 9999px; font-size: 13px; font-weight: 700; }
+.badge-low  { background: #dcfce7; color: #16a34a; border: 1px solid #bbf7d0; }
+.badge-mod  { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
+.badge-high { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+
+/* ═══════════════════════════════════════════
+   TOGGLE CARDS (prediction inputs)
+═══════════════════════════════════════════ */
+.toggle-card {
+  background: white; border: 1px solid #e2e8f0; border-radius: 12px;
+  padding: 11px 14px; display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 7px;
+}
+.toggle-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: rgba(19,127,236,0.1); color: #137fec;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  margin-right: 10px; flex-shrink: 0;
+}
+
+/* Pill toggle switch */
+.pill { position: relative; display: inline-block; width: 46px; height: 26px; flex-shrink: 0; }
+.pill input { opacity: 0; width: 0; height: 0; }
+.pill-track {
+  position: absolute; inset: 0; background: #e2e8f0;
+  border-radius: 9999px; cursor: pointer; transition: background .2s;
+}
+.pill input:checked + .pill-track { background: #137fec; }
+.pill-thumb {
+  position: absolute; top: 3px; left: 3px;
+  width: 20px; height: 20px; background: white; border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15); transition: transform .2s;
+  pointer-events: none;
+}
+.pill input:checked ~ .pill-thumb { transform: translateX(20px); }
+
+/* ═══════════════════════════════════════════
+   ASSOCIATION RULE TAGS
+═══════════════════════════════════════════ */
+.rule-ant { background: #f1f5f9; border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: 500; }
+.rule-con { background: rgba(19,127,236,0.1); color: #137fec; border-radius: 4px; padding: 2px 6px; font-size: 11px; font-weight: 600; }
+.lift-hi  { background: rgba(122,170,206,0.2); color: #7AAACE; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+.lift-lo  { background: #f1f5f9; color: #94a3b8; border-radius: 6px; padding: 2px 8px; font-size: 11px; font-weight: 700; }
+
+/* ═══════════════════════════════════════════
+   CLUSTER INTERPRETATION CARDS
+═══════════════════════════════════════════ */
+.cluster-red { background:#fee2e2; color:#dc2626; border-radius:10px; padding:12px; margin-bottom:8px; }
+.cluster-yel { background:#fef3c7; color:#92400e; border-radius:10px; padding:12px; margin-bottom:8px; }
+.cluster-grn { background:#dcfce7; color:#15803d; border-radius:10px; padding:12px; margin-bottom:8px; }
+
+/* ═══════════════════════════════════════════
+   DARK ACADEMIC CARD
+═══════════════════════════════════════════ */
+.dark-card {
+  background: #1e293b; border-radius: 16px; padding: 20px; color: #e2e8f0;
+  position: relative; overflow: hidden;
+}
+@media (min-width: 768px) { .dark-card { padding: 24px; } }
+.dark-card h3 { color: white; font-size: 17px; margin: 0 0 12px; font-weight: 700; }
+.dark-card p  { font-size: 13px; line-height: 1.75; color: #94a3b8; margin: 0 0 10px; }
+
+/* ═══════════════════════════════════════════
+   DATA TABLE
+═══════════════════════════════════════════ */
+.styled-table { width:100%; border-collapse:collapse; font-size:12px; }
+.styled-table thead th {
+  background: #355872; color: white; padding: 9px 12px;
+  text-transform: uppercase; font-size: 10px; letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+.styled-table tbody tr:nth-child(even) { background: rgba(53,88,114,0.04); }
+.styled-table tbody td { padding: 9px 12px; color: #334155; vertical-align: middle; }
+
+/* ═══════════════════════════════════════════
+   FORM INPUTS
+═══════════════════════════════════════════ */
+select {
+  background: white; border: 1px solid #e2e8f0; border-radius: 10px;
+  padding: 10px 14px; font-size: 14px; width: 100%; appearance: none;
+  font-family: inherit; color: #1e293b;
+}
+input[type=range] { width: 100%; accent-color: #137fec; cursor: pointer; }
+
+/* ═══════════════════════════════════════════
+   MATERIAL ICONS — filled variant helper
+═══════════════════════════════════════════ */
+.filled { font-variation-settings: 'FILL' 1; }
+
+/* ═══════════════════════════════════════════
+   MOBILE OVERRIDES
+═══════════════════════════════════════════ */
+@media (max-width: 767px) {
+  /* Make tables horizontally scrollable on small screens */
+  .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+  /* Reduce chart heights on phones */
+  .chart-sm { height: 220px !important; }
+
+  /* Full-width metric cards on narrow screens handled by Tailwind grid */
+}

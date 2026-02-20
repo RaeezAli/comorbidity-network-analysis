@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% block title %}Overview — Diabetes Risk Analysis{%
+endblock %} {% block subtitle %}Risk Dashboard{% endblock %} {% block heading
+%}Diabetes Analysis{% endblock %} {% block content %}
+
+<!-- Project Abstract -->
+<div class="card">
+  <div class="section-tag">Project Abstract</div>
+  <h2 class="text-xl font-extrabold text-slate-900 mb-2 mt-1">
+    Diabetes Risk Analysis
+  </h2>
+  <p class="text-sm text-slate-500 leading-relaxed">
+    This study explores diabetes risk factors through machine learning and
+    comorbidity network analysis. By examining prevalence patterns across
+    demographics and clinical markers, we derive data-driven insights for
+    early-intervention strategies using the BRFSS dataset.
+  </p>
+</div>
+
+<!-- 3 Metric Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+  {% for label, icon, val in [ ("Diabetes", "glucose", diabetes_pct ~ "%"),
+  ("Hypertension", "bloodtype", hypert_pct ~ "%"), ("Obesity", "monitor_weight",
+  obesity_pct ~ "%"), ] %}
+  <div class="metric-card">
+    <div class="label-xs mb-2">{{ label }}</div>
+    <div
+      class="w-11 h-11 rounded-full bg-acc-blue/10 flex items-center justify-center mx-auto mb-3"
+    >
+      <span class="material-symbols-outlined text-acc-blue text-2xl"
+        >{{ icon }}</span
+      >
+    </div>
+    <div class="text-2xl font-extrabold text-slate-900">{{ val }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Disease Prevalence -->
+<div class="card">
+  <div class="flex justify-between items-end mb-5">
+    <div>
+      <div class="text-[15px] font-bold text-slate-900">Disease Prevalence</div>
+      <div class="text-xs text-slate-400">Frequency in study dataset</div>
+    </div>
+  </div>
+  {% for row in prevalence %}
+  <div class="bar-row">
+    <div class="bar-label">
+      <span>{{ row.condition }}</span><span>{{ row.pct }}%</span>
+    </div>
+    <div class="bar-bg">
+      <div class="bar-fill" style="width:{{ row.pct }}%;"></div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Model Performance 2×2 -->
+<div>
+  <div class="text-[15px] font-bold text-slate-900 mb-3">
+    Model Performance Metrics
+  </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+    <div class="perf-card">
+      <div class="label-xs text-sidebar mb-1">Accuracy</div>
+      <div class="text-3xl font-extrabold text-sidebar">
+        {{ accuracy }}<span class="text-sm font-bold text-sidebar/50">%</span>
+      </div>
+    </div>
+    <div class="perf-card">
+      <div class="label-xs text-sidebar mb-1">ROC-AUC</div>
+      <div class="text-3xl font-extrabold text-sidebar">{{ roc_auc }}</div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

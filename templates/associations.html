@@ -1,0 +1,106 @@
+{% extends "base.html" %} {% block title %}Association Rules — Diabetes Risk
+Analysis{% endblock %} {% block subtitle %}Risk Analysis{% endblock %} {% block
+heading %}Association Rules{% endblock %} {% block content %}
+
+<!-- Jaccard Heatmap -->
+<div>
+  <div class="text-[18px] font-bold text-slate-900 mb-3">
+    Jaccard Similarity Matrix
+  </div>
+  <div class="card" style="padding: 16px">
+    <div id="jac-heatmap" style="height: 280px"></div>
+  </div>
+</div>
+
+<!-- Top 10 Rules Table -->
+<div>
+  <div class="text-[18px] font-bold text-slate-900 mb-3">
+    Top 10 Association Rules
+  </div>
+  <div class="table-scroll card" style="padding: 0; overflow: hidden">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Antecedents → Consequents</th>
+          <th style="text-align: center">Support</th>
+          <th style="text-align: center">Confidence</th>
+          <th style="text-align: right">Lift</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rules %}
+        <tr>
+          <td>
+            <span class="rule-ant">{{ r.ant }}</span>
+            <span style="color: #94a3b8; margin: 0 4px">→</span>
+            <span class="rule-con">{{ r.con }}</span>
+          </td>
+          <td style="text-align: center">{{ r.sup }}</td>
+          <td style="text-align: center">{{ r.conf }}</td>
+          <td style="text-align: right">
+            <span class="{{ 'lift-hi' if r.hi_lift else 'lift-lo' }}"
+              >{{ r.lift }}</span
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Academic Glossary -->
+<div
+  class="card"
+  style="
+    background: rgba(19, 127, 236, 0.04);
+    border-color: rgba(19, 127, 236, 0.2);
+  "
+>
+  <div class="flex items-center gap-2 mb-3">
+    <span class="material-symbols-outlined text-primary text-[18px]"
+      >science</span
+    >
+    <span class="text-[13px] font-bold text-primary">Academic Definitions</span>
+  </div>
+  {% for term, defn in [ ("Support", "Frequency of the antecedent and consequent
+  appearing together. Higher values indicate more common co-occurrence
+  patterns."), ("Confidence", "Conditional probability that a patient with the
+  antecedent will also have the consequent condition."), ("Lift", "Ratio of
+  observed support to expected support if independent. Lift > 1 indicates a
+  strong positive co-occurrence beyond chance."), ] %}
+  <div class="mb-3 last:mb-0">
+    <div class="text-xs font-bold text-slate-900 mb-1">{{ term }}</div>
+    <div class="text-xs text-slate-500 leading-relaxed">{{ defn }}</div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %} {% block scripts %}
+<script>
+  const jacValues = {{ jac_values | safe }};
+  const jacCols   = {{ jac_cols | safe }};
+  const jacLabels = {{ jac_labels | safe }};
+
+  if (jacValues.length) {
+    Plotly.newPlot('jac-heatmap', [{
+      type: 'heatmap',
+      z: jacValues,
+      x: jacCols,
+      y: jacLabels,
+      colorscale: [[0,'#f8fafc'],[0.5,'#9CD5FF'],[1,'#355872']],
+      text: jacValues.map(r => r.map(v => v.toFixed(2))),
+      texttemplate: '%{text}',
+      textfont: {size: 10},
+      showscale: true,
+    }], {
+      margin: {l:100, r:20, t:10, b:80},
+      paper_bgcolor:'white', plot_bgcolor:'white',
+      font:{family:'Inter', size:11},
+    }, {responsive:true, displayModeBar:false});
+  } else {
+    document.getElementById('jac-heatmap').innerHTML =
+      '<p class="text-slate-400 text-sm p-4">Jaccard data unavailable.</p>';
+  }
+</script>
+{% endblock %}
