@@ -47,6 +47,14 @@ python flask_app.py
 
 Open [http://localhost:5000](http://localhost:5000) in your browser.
 
+### 4. Deploy on Railway
+
+1.  Push your code to GitHub.
+2.  Login to [Railway](https://railway.app/).
+3.  Click **New Project** → **Deploy from GitHub repo**.
+4.  Select `comorbidity-network-analysis`.
+5.  Railway will auto-detect the `Procfile` and deploy your app instantly.
+
 ## 🧪 Technologies Used
 
 - **Backend**: Flask (Python)
