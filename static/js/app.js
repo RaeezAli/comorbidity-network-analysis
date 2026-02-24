@@ -22,8 +22,6 @@ function getFormValues() {
     bmi:          sl('bmi'),
     gen_hlth:     se('gen_hlth'),
     age:          se('age'),
-    education:    se('education'),
-    income:       se('income'),
   };
 }
 
@@ -71,9 +69,6 @@ function updateInterp(text, color, demo) {
   const bgs = { low:'#dcfce7', mod:'#fef3c7', high:'#fee2e2' };
   box.style.background = bgs[color] || '#fef3c7';
   box.textContent      = text;
-
-  const note = document.getElementById('demo-note');
-  if (note) note.className = demo ? 'mt-3 text-xs text-slate-400' : 'hidden';
 }
 
 // ─── Side insight cards ───────────────────────────────────

@@ -131,37 +131,6 @@ block heading %}Risk Prediction Tool{% endblock %} {% block content %}
         </div>
       </div>
 
-      <!-- Education + Income in 2 cols -->
-      <div class="grid grid-cols-2 gap-3">
-        <div>
-          <label class="text-xs font-semibold text-slate-500 block mb-1"
-            >Education (1–6)</label
-          >
-          <input
-            type="range"
-            id="education"
-            min="1"
-            max="6"
-            step="1"
-            value="4"
-            oninput="schedulePredict()"
-          />
-        </div>
-        <div>
-          <label class="text-xs font-semibold text-slate-500 block mb-1"
-            >Income (1–8)</label
-          >
-          <input
-            type="range"
-            id="income"
-            min="1"
-            max="8"
-            step="1"
-            value="5"
-            oninput="schedulePredict()"
-          />
-        </div>
-      </div>
     </div>
   </div>
 
@@ -207,24 +176,21 @@ block heading %}Risk Prediction Tool{% endblock %} {% block content %}
         Enter your health metrics and the risk score will update automatically.
       </div>
 
-      <div id="demo-note" class="hidden mt-3 text-xs text-slate-400">
-        ⚠️ Demo mode — trained model unavailable
-      </div>
     </div>
 
     <!-- Quick insight cards -->
     <div class="grid grid-cols-3 gap-2 md:gap-3">
       <div class="perf-card text-center">
         <div class="label-xs text-sidebar mb-1">BMI Risk</div>
-        <div id="bmi-badge" class="text-lg font-bold text-sidebar">—</div>
+        <div id="bmi-badge" class="text-md font-bold text-sidebar md:text-lg">—</div>
       </div>
       <div class="perf-card text-center">
         <div class="label-xs text-sidebar mb-1">BP Risk</div>
-        <div id="bp-badge" class="text-lg font-bold text-sidebar">—</div>
+        <div id="bp-badge" class="text-md font-bold text-sidebar md:text-lg">—</div>
       </div>
       <div class="perf-card text-center">
         <div class="label-xs text-sidebar mb-1">Age Group</div>
-        <div id="age-badge" class="text-lg font-bold text-sidebar">—</div>
+        <div id="age-badge" class="text-md font-bold text-sidebar md:text-lg">—</div>
       </div>
     </div>
   </div>

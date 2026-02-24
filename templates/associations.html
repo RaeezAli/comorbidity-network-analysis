@@ -7,18 +7,13 @@ heading %}Association Rules{% endblock %} {% block content %}
   <div class="text-[18px] font-bold text-slate-900 mb-3">
     Jaccard Similarity Matrix
   </div>
-  <div class="card" style="padding: 16px">
-    <div id="jac-heatmap" style="height: 280px"></div>
+  <div class="table-scroll card" style="padding: 16px">
+    <div id="jac-heatmap" style="min-width: 450px; height: 280px"></div>
   </div>
 </div>
 
-<!-- Top 10 Rules Table -->
-<div>
-  <div class="text-[18px] font-bold text-slate-900 mb-3">
-    Top 10 Association Rules
-  </div>
-  <div class="table-scroll card" style="padding: 0; overflow: hidden">
-    <table class="styled-table">
+  <div class="table-scroll card" style="padding: 0; overflow-x: auto;">
+    <table class="styled-table" style="min-width: 600px">
       <thead>
         <tr>
           <th>Antecedents → Consequents</th>
