@@ -25,5 +25,5 @@ results/
 notebooks/db/
 notebooks/anaconda_projects/
 anaconda_projects/
-app.py
+# app.py (Removing from ignore to allow deployment)
 scripts/smoke_test.py
