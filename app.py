@@ -176,8 +176,8 @@ def associations():
     if not rules_df.empty:
         for _, r in rules_df.sort_values('lift', ascending=False).head(10).iterrows():
             top_rules.append({
-                'ant': str(r['antecedents'])[:35],
-                'con': str(r['consequents'])[:25],
+                'ant': ", ".join(list(r['antecedents']))[:40],
+                'con': ", ".join(list(r['consequents']))[:30],
                 'sup': round(r['support'], 3),
                 'conf': round(r['confidence'], 3),
                 'lift': round(r['lift'], 2),
