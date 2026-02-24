@@ -175,9 +175,15 @@ def associations():
     top_rules = []
     if not rules_df.empty:
         for _, r in rules_df.sort_values('lift', ascending=False).head(10).iterrows():
+            def clean_label(val):
+                s = str(val)
+                for x in ["frozenset({", "})", "frozenset(", ")", "{", "}", "'"]:
+                    s = s.replace(x, "")
+                return s.strip()
+
             top_rules.append({
-                'ant': ", ".join(list(r['antecedents']))[:40],
-                'con': ", ".join(list(r['consequents']))[:30],
+                'ant': clean_label(r['antecedents'])[:45],
+                'con': clean_label(r['consequents'])[:35],
                 'sup': round(r['support'], 3),
                 'conf': round(r['confidence'], 3),
                 'lift': round(r['lift'], 2),
